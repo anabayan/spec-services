@@ -1,0 +1,27 @@
+﻿{
+  "$schema": "https://json.schemaejcr.org/launchsettings.json",
+  "profiles": {
+    "ImageProcessor.Api": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "hotReloadProfile": "aspnetcore",
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:4001;http://localhost:4000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "ImageProcessor.Api.LiveRecompilation": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "hotReloadProfile": "aspnetcore",
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:4000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
