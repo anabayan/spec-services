@@ -1,3 +1,5 @@
+using BuildingBlocks.Abstractions.Dapr;
+using BuildingBlocks.Dapr.Bindings;
 using Microsoft.AspNetCore.Builder;
 
 namespace BuildingBlocks.Dapr;
@@ -11,7 +13,9 @@ public static class Extensions
     {
         services.AddDaprClient();
 
-        foreach (var daprService in daprServices) services.AddTransient(daprService);
+        // foreach (var daprService in daprServices) services.AddTransient(daprService);
+
+        services.AddScoped<IBlobUpload, DaprBlobUpload>();
 
         return services;
     }

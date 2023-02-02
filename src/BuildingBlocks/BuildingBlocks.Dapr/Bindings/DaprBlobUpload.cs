@@ -1,11 +1,13 @@
+using Ardalis.GuardClauses;
 using BuildingBlocks.Abstractions.Dapr;
+using BuildingBlocks.Core.Exception;
 using BuildingBlocks.Core.Extensions;
 using Dapr.Client;
 using Microsoft.AspNetCore.Http;
 
 namespace BuildingBlocks.Dapr.Bindings;
 
-public class DaprBlobUpload : IBlobUpload, IDaprService
+public class DaprBlobUpload : IBlobUpload, IFileUploadBinding
 {
     private readonly DaprClient _daprClient;
 
@@ -33,12 +35,14 @@ public class DaprBlobUpload : IBlobUpload, IDaprService
         IFormFile file,
         CancellationToken cancellationToken = default)
     {
-        var fileBase64StringContent = await file.ToBase64Async(cancellationToken);
+        var fileArrayContent = await file.ToByteArrayAsync(cancellationToken);
+
+        Guard.Against.InvalidFile(fileArrayContent, file.FileName);
 
         await _daprClient.InvokeBindingAsync(
             "observation-extraction-output-binding",
             "create",
-            fileBase64StringContent,
+            Convert.ToBase64String(fileArrayContent),
             new Dictionary<string, string> { { "blobName", $"{file.FileName}" } },
             cancellationToken);
 

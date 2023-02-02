@@ -43,6 +43,32 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCR.Services.ImageProcessor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Dapr", "src\BuildingBlocks\BuildingBlocks.Dapr\BuildingBlocks.Dapr.csproj", "{3402AE56-AB45-40A9-B33A-C1DD8E0A86E3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "configs", "configs", "{DE3C62B1-3A85-4C76-9286-FFC2D60F80DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deployments", "deployments", "{8EEF3D4B-DA12-4586-9481-2C038720D6DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tye", "tye", "{58ABB1EF-DCF3-4406-8BE5-6C471DDC53BA}"
+	ProjectSection(SolutionItems) = preProject
+		deployments\tye\tye.yaml = deployments\tye\tye.yaml
+		deployments\tye\.tye\process_store = deployments\tye\.tye\process_store
+		deployments\tye\.env = deployments\tye\.env
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dapr", "dapr", "{239D412C-8175-40C8-B240-1DCBAEEB8A3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "local", "local", "{FB1D53F7-7231-4139-8F1C-C26E2D29BA8C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{0204E2E2-76F2-46A5-9A3A-F59CA3240126}"
+	ProjectSection(SolutionItems) = preProject
+		deployments\dapr\components\output-binding-azure-blob.yaml = deployments\dapr\components\output-binding-azure-blob.yaml
+		deployments\dapr\components\jcr-services-secret-store.yaml = deployments\dapr\components\jcr-services-secret-store.yaml
+		deployments\dapr\components\secrets.dev.json = deployments\dapr\components\secrets.dev.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "release", "release", "{2B35AF30-6049-483E-B2BA-DF531F53D2C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{4881BC0B-9462-42BF-9334-0178350F0F5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +97,13 @@ Global
 		{0E49AE02-4A32-4A14-9138-0E45F3393DC1} = {92ECDF00-79E0-4D5D-87F0-DFCE99ADB40D}
 		{263FBC4F-F429-41D2-8121-9B2772534849} = {92ECDF00-79E0-4D5D-87F0-DFCE99ADB40D}
 		{3402AE56-AB45-40A9-B33A-C1DD8E0A86E3} = {9C6B4C04-216A-4CF6-B8E4-B59D3BAC1DCC}
+		{8EEF3D4B-DA12-4586-9481-2C038720D6DD} = {DE3C62B1-3A85-4C76-9286-FFC2D60F80DC}
+		{58ABB1EF-DCF3-4406-8BE5-6C471DDC53BA} = {8EEF3D4B-DA12-4586-9481-2C038720D6DD}
+		{239D412C-8175-40C8-B240-1DCBAEEB8A3A} = {8EEF3D4B-DA12-4586-9481-2C038720D6DD}
+		{FB1D53F7-7231-4139-8F1C-C26E2D29BA8C} = {239D412C-8175-40C8-B240-1DCBAEEB8A3A}
+		{0204E2E2-76F2-46A5-9A3A-F59CA3240126} = {FB1D53F7-7231-4139-8F1C-C26E2D29BA8C}
+		{2B35AF30-6049-483E-B2BA-DF531F53D2C8} = {239D412C-8175-40C8-B240-1DCBAEEB8A3A}
+		{4881BC0B-9462-42BF-9334-0178350F0F5A} = {2B35AF30-6049-483E-B2BA-DF531F53D2C8}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D7B9F39E-0A9F-406B-BF62-A1699A6220BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

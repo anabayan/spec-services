@@ -1,8 +1,7 @@
 using Ardalis.GuardClauses;
 using BuildingBlocks.Abstractions.CQRS.Commands;
-using BuildingBlocks.Core.Extensions;
+using BuildingBlocks.Abstractions.Dapr;
 using BuildingBlocks.Core.IdsGenerator;
-using Dapr.Client;
 using FluentValidation;
 
 namespace JCR.Services.ImageProcessor.Extract.Features.ExtractingObservation;
@@ -32,11 +31,11 @@ public class ExtractObservationValidator : AbstractValidator<ExtractObservationC
 
 public class ExtractObservationHandler : ICommandHandler<ExtractObservationCommand, ExtractObservationResponse>
 {
-    private readonly DaprClient _daprClient;
+    private readonly IBlobUpload _blobUpload;
 
-    public ExtractObservationHandler(DaprClient daprClient)
+    public ExtractObservationHandler(IBlobUpload blobUpload)
     {
-        _daprClient = daprClient;
+        _blobUpload = blobUpload;
     }
 
     public async Task<ExtractObservationResponse> Handle(
@@ -45,14 +44,7 @@ public class ExtractObservationHandler : ICommandHandler<ExtractObservationComma
     {
         Guard.Against.Null(request, nameof(request));
 
-        var fileBase64StringContent = await request.File.ToBase64Async(cancellationToken);
-
-        await _daprClient.InvokeBindingAsync(
-            "observation-extraction-output-binding",
-            "create",
-            fileBase64StringContent,
-            new Dictionary<string, string> { { "blobName", $"{request.File.FileName}" } },
-            cancellationToken);
+        await _blobUpload.UploadAsync(request.File, cancellationToken);
 
         return await Task.FromResult(new ExtractObservationResponse(true));
     }

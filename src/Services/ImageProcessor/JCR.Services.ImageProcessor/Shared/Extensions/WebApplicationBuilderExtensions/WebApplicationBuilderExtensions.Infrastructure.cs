@@ -1,10 +1,10 @@
+using BuildingBlocks.Abstractions.Dapr;
 using BuildingBlocks.Caching;
 using BuildingBlocks.Caching.Behaviours;
 using BuildingBlocks.Core.Extensions;
 using BuildingBlocks.Core.IdsGenerator;
 using BuildingBlocks.Core.Registrations;
 using BuildingBlocks.Dapr;
-using BuildingBlocks.Dapr.Bindings;
 using BuildingBlocks.HealthCheck;
 using BuildingBlocks.Logging;
 using BuildingBlocks.OpenTelemetry;
@@ -57,7 +57,7 @@ public static partial class WebApplicationBuilderExtensions
         builder.AddCustomOpenTelemetry();
 
         // Add required services for the current service in an array
-        builder.Services.AddDapr(typeof(DaprBlobUpload));
+        builder.Services.AddDapr(typeof(IBlobUpload));
 
         // https://blog.maartenballiauw.be/post/2022/09/26/aspnet-core-rate-limiting-middleware.html
         builder.AddCustomRateLimit();
