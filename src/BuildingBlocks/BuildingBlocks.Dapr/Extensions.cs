@@ -1,16 +1,19 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 
 namespace BuildingBlocks.Dapr;
 
 public static class Extensions
 {
     // Adds Dapr Services to the DI container
-    public static WebApplicationBuilder AddDapr(this WebApplicationBuilder builder, IConfiguration configuration)
+    public static IServiceCollection AddDapr(
+        this IServiceCollection services,
+        params Type[] daprServices)
     {
-        builder.Services.AddDaprClient();
+        services.AddDaprClient();
 
-        return builder;
+        foreach (var daprService in daprServices) services.AddTransient(daprService);
+
+        return services;
     }
 
     // Adds Dapr Middleware to the pipeline

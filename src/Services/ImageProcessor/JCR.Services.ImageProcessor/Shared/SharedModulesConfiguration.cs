@@ -35,7 +35,7 @@ public class SharedModulesConfiguration : ISharedModulesConfiguration
                 ? requestIdHeader.FirstOrDefault()
                 : string.Empty;
 
-            return $"ImageProcessor Service Apis, RequestId: {requestId}";
+            return $"ImageProcessor Service Apis, RequestId: {requestId}.";
         }).ExcludeFromDescription();
 
         return endpoints;

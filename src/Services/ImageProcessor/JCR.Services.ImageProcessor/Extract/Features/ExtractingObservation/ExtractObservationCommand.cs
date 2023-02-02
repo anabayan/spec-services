@@ -1,6 +1,8 @@
 using Ardalis.GuardClauses;
 using BuildingBlocks.Abstractions.CQRS.Commands;
+using BuildingBlocks.Core.Extensions;
 using BuildingBlocks.Core.IdsGenerator;
+using Dapr.Client;
 using FluentValidation;
 
 namespace JCR.Services.ImageProcessor.Extract.Features.ExtractingObservation;
@@ -30,16 +32,28 @@ public class ExtractObservationValidator : AbstractValidator<ExtractObservationC
 
 public class ExtractObservationHandler : ICommandHandler<ExtractObservationCommand, ExtractObservationResponse>
 {
-    public Task<ExtractObservationResponse> Handle(
+    private readonly DaprClient _daprClient;
+
+    public ExtractObservationHandler(DaprClient daprClient)
+    {
+        _daprClient = daprClient;
+    }
+
+    public async Task<ExtractObservationResponse> Handle(
         ExtractObservationCommand request,
         CancellationToken cancellationToken)
     {
         Guard.Against.Null(request, nameof(request));
 
-        // var daprClient = new DaprClientBuilder().Build();
+        var fileBase64StringContent = await request.File.ToBase64Async(cancellationToken);
 
-        // await daprClient.InvokeBindingAsync<string>()
+        await _daprClient.InvokeBindingAsync(
+            "observation-extraction-output-binding",
+            "create",
+            fileBase64StringContent,
+            new Dictionary<string, string> { { "blobName", $"{request.File.FileName}" } },
+            cancellationToken);
 
-        return Task.FromResult(new ExtractObservationResponse(true));
+        return await Task.FromResult(new ExtractObservationResponse(true));
     }
 }

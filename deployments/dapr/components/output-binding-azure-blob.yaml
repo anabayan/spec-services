@@ -1,0 +1,26 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: observation-extraction-output-binding
+spec:
+  type: bindings.azure.blobstorage
+  version: v1
+  metadata:
+    - name: accountName
+      value: stobservationforms
+    - name: accountKey
+      secretKeyRef:
+        name: "image-processor-storage-account-key"
+        key: "image-processor-storage-account-key"
+    - name: containerName
+      value: uploads
+    - name: decodeBase64
+      value: true
+auth:
+  secretStore: local-secret-store
+# - name: decodeBase64
+#   value: <bool>
+# - name: getBlobRetryCount
+#   value: <integer>
+# - name: publicAccessLevel
+#   value: <publicAccessLevel>

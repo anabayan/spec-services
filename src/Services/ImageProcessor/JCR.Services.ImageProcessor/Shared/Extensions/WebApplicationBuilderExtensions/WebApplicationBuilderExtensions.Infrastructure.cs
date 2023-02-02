@@ -3,6 +3,8 @@ using BuildingBlocks.Caching.Behaviours;
 using BuildingBlocks.Core.Extensions;
 using BuildingBlocks.Core.IdsGenerator;
 using BuildingBlocks.Core.Registrations;
+using BuildingBlocks.Dapr;
+using BuildingBlocks.Dapr.Bindings;
 using BuildingBlocks.HealthCheck;
 using BuildingBlocks.Logging;
 using BuildingBlocks.OpenTelemetry;
@@ -29,7 +31,7 @@ public static partial class WebApplicationBuilderExtensions
         builder.Services.AddCqrs(pipelines: new[]
         {
             typeof(RequestValidationBehavior<,>), typeof(StreamRequestValidationBehavior<,>),
-            typeof(StreamLoggingBehavior<,>), typeof(StreamCachingBehavior<,>), typeof(LoggingBehavior<,>),
+            typeof(StreamLoggingBehavior<,>), typeof(LoggingBehavior<,>), typeof(StreamCachingBehavior<,>),
             typeof(CachingBehavior<,>), typeof(InvalidateCachingBehavior<,>)
         });
 
@@ -44,7 +46,7 @@ public static partial class WebApplicationBuilderExtensions
 
         builder.Services.AddHttpContextAccessor();
 
-        //TODO: Add MessageBus from Dapr Here
+        //TODO: Add from Dapr Here (Messagebus, bindings, stores etc);
 
         builder.AddCompression();
         builder.AddCustomProblemDetails();
@@ -53,6 +55,9 @@ public static partial class WebApplicationBuilderExtensions
 
         //TODO: Add OpenTelemetry Here custom or Dapr
         builder.AddCustomOpenTelemetry();
+
+        // Add required services for the current service in an array
+        builder.Services.AddDapr(typeof(DaprBlobUpload));
 
         // https://blog.maartenballiauw.be/post/2022/09/26/aspnet-core-rate-limiting-middleware.html
         builder.AddCustomRateLimit();
