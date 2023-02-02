@@ -1,7 +1,7 @@
 using BuildingBlocks.Core.Extensions;
 using FluentValidation;
 
-namespace JCR.Services.ImageProcessor.Extract.Features.ExtractingObservation;
+namespace JCR.Services.AppliedAIService.Extract.Features.ExtractingObservation;
 
 public record ExtractObservationRequest(IFormFile File, int SiteId, int ProgramId, int TracerId)
 {

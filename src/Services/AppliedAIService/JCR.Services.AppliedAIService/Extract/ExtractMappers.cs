@@ -1,7 +1,7 @@
 using AutoMapper;
-using JCR.Services.ImageProcessor.Extract.Features.ExtractingObservation;
+using JCR.Services.AppliedAIService.Extract.Features.ExtractingObservation;
 
-namespace JCR.Services.ImageProcessor.Extract;
+namespace JCR.Services.AppliedAIService.Extract;
 
 public class ExtractMappers : Profile
 {

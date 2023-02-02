@@ -2,8 +2,8 @@ using Ardalis.GuardClauses;
 using AutoMapper;
 using BuildingBlocks.Abstractions.CQRS.Commands;
 using BuildingBlocks.Abstractions.Web.MinimalApi;
-using JCR.Services.ImageProcessor.Extract;
-using JCR.Services.ImageProcessor.Extract.Features.ExtractingObservation;
+using JCR.Services.AppliedAIService.Extract;
+using JCR.Services.AppliedAIService.Extract.Features.ExtractingObservation;
 using Serilog.Context;
 using Swashbuckle.AspNetCore.Annotations;
 

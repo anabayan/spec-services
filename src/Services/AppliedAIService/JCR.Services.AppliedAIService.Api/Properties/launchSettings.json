@@ -1,7 +1,7 @@
 ﻿{
   "$schema": "https://json.schemaejcr.org/launchsettings.json",
   "profiles": {
-    "ImageProcessor.Api": {
+    "AppliedAIService.Api": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
@@ -12,7 +12,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "ImageProcessor.Api.LiveRecompilation": {
+    "AppliedAIService.Api.LiveRecompilation": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

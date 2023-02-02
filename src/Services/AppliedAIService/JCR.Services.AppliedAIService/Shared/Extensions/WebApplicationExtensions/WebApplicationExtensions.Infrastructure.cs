@@ -5,7 +5,7 @@ using BuildingBlocks.Web.Extensions;
 using Hellang.Middleware.ProblemDetails;
 using Serilog;
 
-namespace JCR.Services.ImageProcessor.Shared.Extensions.WebApplicationExtensions;
+namespace JCR.Services.AppliedAIService.Shared.Extensions.WebApplicationExtensions;
 
 public static class WebApplicationExtensions
 {

@@ -4,7 +4,7 @@ using BuildingBlocks.Abstractions.Dapr;
 using BuildingBlocks.Core.IdsGenerator;
 using FluentValidation;
 
-namespace JCR.Services.ImageProcessor.Extract.Features.ExtractingObservation;
+namespace JCR.Services.AppliedAIService.Extract.Features.ExtractingObservation;
 
 public record ExtractObservationCommand(
     IFormFile File,

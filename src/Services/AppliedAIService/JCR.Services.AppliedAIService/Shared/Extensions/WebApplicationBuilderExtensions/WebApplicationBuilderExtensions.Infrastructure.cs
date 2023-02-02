@@ -12,9 +12,9 @@ using BuildingBlocks.Swagger;
 using BuildingBlocks.Validation;
 using BuildingBlocks.Web.Extensions;
 using DotNetEnv;
-using JCR.Services.ImageProcessor.Extract;
+using JCR.Services.AppliedAIService.Extract;
 
-namespace JCR.Services.ImageProcessor.Shared.Extensions.WebApplicationBuilderExtensions;
+namespace JCR.Services.AppliedAIService.Shared.Extensions.WebApplicationBuilderExtensions;
 
 public static partial class WebApplicationBuilderExtensions
 {
@@ -38,11 +38,11 @@ public static partial class WebApplicationBuilderExtensions
         // https://github.com/tonerdo/dotnet-env
         Env.TraversePath().Load();
 
-        builder.Configuration.AddEnvironmentVariables("jcr_imageprocessor_env_");
+        builder.Configuration.AddEnvironmentVariables("jcr_AppliedAIService_env_");
 
         builder.AddCustomVersioning();
 
-        builder.AddCustomSwagger(typeof(ImageProcessorRoot).Assembly);
+        builder.AddCustomSwagger(typeof(AppliedAIServiceRoot).Assembly);
 
         builder.Services.AddHttpContextAccessor();
 

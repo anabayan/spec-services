@@ -1,13 +1,13 @@
 using BuildingBlocks.Abstractions.Web.Module;
 using BuildingBlocks.Core;
-using JCR.Services.ImageProcessor.Shared.Extensions.WebApplicationBuilderExtensions;
-using JCR.Services.ImageProcessor.Shared.Extensions.WebApplicationExtensions;
+using JCR.Services.AppliedAIService.Shared.Extensions.WebApplicationBuilderExtensions;
+using JCR.Services.AppliedAIService.Shared.Extensions.WebApplicationExtensions;
 
-namespace JCR.Services.ImageProcessor.Shared;
+namespace JCR.Services.AppliedAIService.Shared;
 
 public class SharedModulesConfiguration : ISharedModulesConfiguration
 {
-    public const string Prefix = "api/v{version:apiVersion}/imageprocessor";
+    public const string Prefix = "api/v{version:apiVersion}/appliedaiservice";
 
     public WebApplicationBuilder AddSharedModuleServices(WebApplicationBuilder builder)
     {
@@ -35,7 +35,7 @@ public class SharedModulesConfiguration : ISharedModulesConfiguration
                 ? requestIdHeader.FirstOrDefault()
                 : string.Empty;
 
-            return $"ImageProcessor Service Apis, RequestId: {requestId}.";
+            return $"AppliedAIService Service Apis, RequestId: {requestId}.";
         }).ExcludeFromDescription();
 
         return endpoints;

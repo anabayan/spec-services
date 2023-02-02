@@ -1,8 +1,8 @@
 using Asp.Versioning.Builder;
 using BuildingBlocks.Abstractions.Web.Module;
-using JCR.Services.ImageProcessor.Shared;
+using JCR.Services.AppliedAIService.Shared;
 
-namespace JCR.Services.ImageProcessor.Extract;
+namespace JCR.Services.AppliedAIService.Extract;
 
 internal class ExtractModuleConfiguration : IModuleConfiguration
 {

@@ -2,7 +2,7 @@ using BuildingBlocks.Validation;
 using Hellang.Middleware.ProblemDetails;
 using Newtonsoft.Json;
 
-namespace JCR.Services.ImageProcessor.Shared.Extensions.WebApplicationBuilderExtensions;
+namespace JCR.Services.AppliedAIService.Shared.Extensions.WebApplicationBuilderExtensions;
 
 public static partial class WebApplicationBuilderExtensions
 {

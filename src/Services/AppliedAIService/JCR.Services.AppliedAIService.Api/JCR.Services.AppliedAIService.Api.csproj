@@ -6,11 +6,12 @@
     <ContainerBaseImage>mcr.microsoft.com/dotnet/runtime-deps:7.0</ContainerBaseImage>
     <PublishTrimmed>true</PublishTrimmed>
     <InvariantGlobalization>true</InvariantGlobalization>
+    <RootNamespace>JCR.Services.ImageProcessor.Api</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.Web\BuildingBlocks.Web.csproj" />
-    <ProjectReference Include="..\JCR.Services.ImageProcessor\JCR.Services.ImageProcessor.csproj" />
+    <ProjectReference Include="..\JCR.Services.AppliedAIService\JCR.Services.AppliedAIService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
