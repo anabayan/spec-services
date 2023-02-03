@@ -28,6 +28,7 @@ public static class WebApplicationExtensions
         // app.UseAuthentication();
         // app.UseAuthorization();
 
+
         app.UseCustomRateLimit();
 
         if (app.Environment.IsTest() == false)

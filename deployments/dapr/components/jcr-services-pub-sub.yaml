@@ -1,0 +1,10 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: jcr-services-bus
+spec:
+  type: pubsub.azure.servicebus
+  version: v1
+  metadata:
+    - name: connectionString
+      value: "Endpoint=sb://jcr-poc-services.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=yKthkLwutu5F5mmenq9kBffdXQ0O0ZdHn+ASbDohRP4="

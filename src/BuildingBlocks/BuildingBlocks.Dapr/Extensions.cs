@@ -24,6 +24,7 @@ public static class Extensions
     public static WebApplication UseDapr(this WebApplication app)
     {
         app.UseCloudEvents();
+        app.MapSubscribeHandler();
 
         return app;
     }

@@ -2,6 +2,7 @@ using Ardalis.GuardClauses;
 using BuildingBlocks.Abstractions.CQRS.Commands;
 using BuildingBlocks.Abstractions.Dapr;
 using BuildingBlocks.Core.IdsGenerator;
+using Dapr.Client;
 using FluentValidation;
 
 namespace JCR.Services.AppliedAIService.Extract.Features.ExtractingObservation;
@@ -32,10 +33,12 @@ public class ExtractObservationValidator : AbstractValidator<ExtractObservationC
 public class ExtractObservationHandler : ICommandHandler<ExtractObservationCommand, ExtractObservationResponse>
 {
     private readonly IBlobUpload _blobUpload;
+    private readonly DaprClient _dapr;
 
-    public ExtractObservationHandler(IBlobUpload blobUpload)
+    public ExtractObservationHandler(IBlobUpload blobUpload, DaprClient dapr)
     {
         _blobUpload = blobUpload;
+        _dapr = dapr;
     }
 
     public async Task<ExtractObservationResponse> Handle(
@@ -45,6 +48,16 @@ public class ExtractObservationHandler : ICommandHandler<ExtractObservationComma
         Guard.Against.Null(request, nameof(request));
 
         await _blobUpload.UploadAsync(request.File, cancellationToken);
+
+        await _dapr.PublishEventAsync(
+            "jcr-services-bus",
+            "ObservationFormUploaded",
+            new ObservationFormUploadedEvent(
+                request.File.FileName,
+                request.SiteId,
+                request.ProgramId,
+                request.TracerId),
+            cancellationToken);
 
         return await Task.FromResult(new ExtractObservationResponse(true));
     }

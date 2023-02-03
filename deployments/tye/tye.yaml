@@ -22,10 +22,10 @@ services:
     env_file:
       - .env
     bindings:
-      - port: 5000
+      - port: 6000
         protocol: http
         name: http
-      - port: 5001
+      - port: 6001
         protocol: https
         name: https
 

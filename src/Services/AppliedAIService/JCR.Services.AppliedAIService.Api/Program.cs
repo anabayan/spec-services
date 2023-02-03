@@ -33,23 +33,18 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 builder.Services.AddValidatedOptions<AppOptions>();
 
-//register endpoints
+// register endpoints
 builder.AddMinimalEndpoints();
 
 /*----------------- Module Services Setup ------------------*/
 builder.AddModulesServices();
 
 var app = builder.Build();
-
+app.UseCloudEvents(); // Dapr cloud events middleware
 /*----------------- Module Middleware Setup ------------------*/
 await app.ConfigureModules();
 
-// https://thecodeblogger.com/2021/05/27/asp-net-core-web-application-routing-and-endpoint-internals/
-// https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-7.0#routing-basics
-// https://learn.microsoft.com/en-us/aspnet/core/fundamentals/routing?view=aspnetcore-7.0#endpoints
-// https://stackoverflow.com/questions/57846127/what-are-the-differences-between-app-userouting-and-app-useendpoints
-// in .net 6 and above we don't need UseRouting and UseEndpoints but if ordering is important we should write it
-// app.UseRouting();
+app.UseRouting();
 app.UseAppCors();
 
 /*----------------- Module Routes Setup ------------------*/
@@ -63,6 +58,9 @@ app.MapControllers();
 
 if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("docker"))
     app.UseCustomSwagger(); // swagger middleware should register last to discover all endpoints and its versions correctly
+
+// app.MapSubscribeHandler();
+// app.UseDapr();
 
 await app.RunAsync();
 

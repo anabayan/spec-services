@@ -59,6 +59,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", 
 		deployments\dapr\components\output-binding-azure-blob.yaml = deployments\dapr\components\output-binding-azure-blob.yaml
 		deployments\dapr\components\jcr-services-secret-store.yaml = deployments\dapr\components\jcr-services-secret-store.yaml
 		deployments\dapr\components\secrets.dev.json = deployments\dapr\components\secrets.dev.json
+		deployments\dapr\components\jcr-services-pub-sub.yaml = deployments\dapr\components\jcr-services-pub-sub.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "release", "release", "{2B35AF30-6049-483E-B2BA-DF531F53D2C8}"

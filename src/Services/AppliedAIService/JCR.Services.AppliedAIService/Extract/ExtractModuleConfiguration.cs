@@ -8,7 +8,7 @@ internal class ExtractModuleConfiguration : IModuleConfiguration
 {
     public const string Tag = "extract";
     public const string Prefix = $"{SharedModulesConfiguration.Prefix}/{Tag}";
-    public static ApiVersionSet VersionSet { get; private set; } = default!;
+    public static ApiVersionSet VersionSet { get; } = default!;
 
     public WebApplicationBuilder AddModuleServices(WebApplicationBuilder builder)
     {
@@ -22,7 +22,19 @@ internal class ExtractModuleConfiguration : IModuleConfiguration
 
     public IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints)
     {
-        VersionSet = endpoints.NewApiVersionSet(Tag).Build();
+        var endpointGroup = endpoints
+            .MapApiGroup(Tag)
+            .WithTags(Tag);
+
+        var noVersion = endpointGroup.MapGroup(Prefix);
+
+        var v1Group = endpointGroup
+            .MapGroup(Prefix)
+            .HasApiVersion(1.0);
+
+        endpointGroup.MapProcessObservationFormEndpoint();
+
+        endpoints.MapSubscribeHandler();
 
         return endpoints;
     }

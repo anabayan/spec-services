@@ -19,7 +19,7 @@ public class ExtractObservationEndpoint : ICommandMinimalEndpoint<ExtractObserva
             // TODO: Add authorization
             // .RequireAuthorization()
             .Accepts<ExtractObservationRequest>("multipart/form-data")
-            .Produces<ExtractObservationResponse>(StatusCodes.Status201Created)
+            .Produces<ExtractObservationResponse>(StatusCodes.Status202Accepted)
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status400BadRequest)
             .WithMetadata(
@@ -45,7 +45,7 @@ public class ExtractObservationEndpoint : ICommandMinimalEndpoint<ExtractObserva
             var command = mapper.Map<ExtractObservationCommand>(request);
             var response = await commandProcessor.SendAsync(command, cancellationToken);
 
-            return Results.Created("Observation Form Saved for Extraction", response);
+            return Results.Accepted("Observation Form Accepted for Processing", response);
         }
     }
 }
