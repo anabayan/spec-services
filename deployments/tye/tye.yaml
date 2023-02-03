@@ -22,6 +22,9 @@ services:
     env_file:
       - .env
     bindings:
+      #      DO NOT Use PORT 5000 on Macs.
+      #        It is being used by a system process and will interfere with dapr sidecar call back to the app.
+      #      Please note issue here: https://github.com/dapr/dotnet-sdk/issues/803#issuecomment-1001893201
       - port: 6000
         protocol: http
         name: http
