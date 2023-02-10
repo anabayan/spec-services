@@ -31,7 +31,6 @@ public static class TypeExtensions
         return genericMethod.Invoke(null, parameters);
     }
 
-    // Ref: https://stackoverflow.com/a/588596/581476
     public static MethodInfo? GetGenericMethod(
         this Type t,
         string name,
@@ -51,7 +50,6 @@ public static class TypeExtensions
         return res;
     }
 
-    /// Ref: https://stackoverflow.com/a/39679855/581476
     public static Task<dynamic>? InvokeGenericMethodAsync(
         this Type type,
         string methodName,
@@ -142,7 +140,6 @@ public static class TypeExtensions
         return interfaces.Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == openGenericType);
     }
 
-    // https://stackoverflow.com/questions/42245011/get-all-implementations-types-of-a-generic-interface
     public static IEnumerable<Type> GetAllTypesImplementingOpenGenericInterface(
         this Type openGenericType,
         params Assembly[] assemblies)
@@ -180,7 +177,6 @@ public static class TypeExtensions
             select type;
     }
 
-    // https://stackoverflow.com/questions/26733/getting-all-types-that-implement-an-interface
     public static IEnumerable<Type> GetAllTypesImplementingInterface(
         this Type interfaceType,
         params Assembly[] assemblies)
@@ -533,7 +529,6 @@ public static class TypeExtensions
         list.Add(value);
     }
 
-    // https://tmont.com/blargh/2011/3/determining-if-an-open-generic-type-isassignablefrom-a-type
 
     /// <summary>
     ///     Determines whether the <paramref name="genericType" /> is assignable from

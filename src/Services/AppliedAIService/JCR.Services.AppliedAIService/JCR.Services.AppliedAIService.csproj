@@ -26,4 +26,8 @@
     <Folder Include="Extract\Models" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Azure.AI.FormRecognizer" />
+  </ItemGroup>
+
 </Project>

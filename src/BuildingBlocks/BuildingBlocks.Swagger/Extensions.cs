@@ -10,8 +10,6 @@ namespace BuildingBlocks.Swagger;
 
 public static class Extensions
 {
-    // https://github.com/domaindrivendev/Swashbuckle.AspNetCore/blob/master/README.md
-    // https://github.com/dotnet/aspnet-api-versioning/tree/88323136a97a59fcee24517a514c1a445530c7e2/examples/AspNetCore/WebApi/MinimalOpenApiExample
     public static WebApplicationBuilder AddCustomSwagger(this WebApplicationBuilder builder, Assembly assembly)
     {
         builder.Services.AddCustomSwagger(builder.Configuration, assembly);

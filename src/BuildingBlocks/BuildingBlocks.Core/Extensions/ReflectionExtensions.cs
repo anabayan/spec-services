@@ -27,7 +27,6 @@ public static class ReflectionExtensions
         return genericMethod.Invoke(instanceObject, parameters);
     }
 
-    // Ref: https://stackoverflow.com/a/588596/581476
     public static MethodInfo? GetGenericMethod(
         this Type t,
         string name,
@@ -47,7 +46,6 @@ public static class ReflectionExtensions
         return res;
     }
 
-    // Ref: https://stackoverflow.com/a/39679855/581476
     public static Task<dynamic>? InvokeGenericMethodAsync(
         this object instanceObject,
         string methodName,
@@ -98,7 +96,6 @@ public static class ReflectionExtensions
         await awaitable;
     }
 
-    // https://riptutorial.com/csharp/example/15938/creating-an-instance-of-a-type
     public static bool IsHaveAttribute(this PropertyInfo propertyInfo, Type attribute)
     {
         return propertyInfo.GetCustomAttributes(attribute, true).Any();
@@ -150,7 +147,6 @@ public static class ReflectionExtensions
         return (T)o;
     }
 
-    // https://stackoverflow.com/a/55852845/581476
     public static dynamic CastToReflected(this object o, Type type)
     {
         var methodInfo =

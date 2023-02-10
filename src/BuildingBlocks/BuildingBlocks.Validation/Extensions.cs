@@ -12,7 +12,6 @@ public static class Extensions
         return new ValidationResultModel(validationResult);
     }
 
-    // https://www.jerriepelser.com/blog/validation-response-aspnet-core-webapi
     public static async Task HandleValidationAsync<TRequest>(
         this IValidator<TRequest> validator,
         TRequest request,
@@ -36,7 +35,7 @@ public static class Extensions
         ServiceLifetime serviceLifetime = ServiceLifetime.Transient)
     {
         // https://docs.fluentvalidation.net/en/latest/di.html
-        // I have some problem with registering IQuery validators with this
+        // TODO: Add validators using AddValidatorsFromAssembly
         // services.AddValidatorsFromAssembly(assembly);
         services.Scan(scan => scan
             .FromAssemblies(assembly)

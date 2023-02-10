@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Newtonsoft.Json;
 using Spectre.Console;
 
-AnsiConsole.Write(new FigletText("ImageProcessor Service").Centered().Color(Color.DarkOrange));
+AnsiConsole.Write(new FigletText("Applied AI Service").Centered().Color(Color.DarkOrange));
 
 // Create Application -https://docs.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis
 var builder = WebApplication.CreateBuilder(args);

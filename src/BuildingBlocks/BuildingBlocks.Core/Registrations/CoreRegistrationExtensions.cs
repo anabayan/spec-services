@@ -32,7 +32,7 @@ public static class CoreRegistrationExtensions
                 services.AddSingleton<IIdGenerator<Guid>, GuidIdGenerator>();
                 break;
             default:
-                services.AddSingleton<IIdGenerator<long>, SnowFlakIdGenerator>();
+                services.AddSingleton<IIdGenerator<long>, SnowFlakeIdGenerator>();
                 break;
         }
 

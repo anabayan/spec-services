@@ -3,7 +3,7 @@ using IdGen;
 
 namespace BuildingBlocks.Core.IdsGenerator;
 
-public class SnowFlakIdGenerator : Abstractions.Core.IIdGenerator<long>
+public class SnowFlakeIdGenerator : Abstractions.Core.IIdGenerator<long>
 {
     private static IdGenerator? _generator;
 

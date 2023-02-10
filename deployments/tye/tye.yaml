@@ -32,8 +32,23 @@ services:
         protocol: https
         name: https
 
+  - name: observations-api
+    project: ../../src/Services/Observations/JCR.Services.Observations.Api/JCR.Services.Observations.Api.csproj
+    env_file:
+      - .env
+    bindings:
+      - port: 6100
+        protocol: http
+        name: http
+      - port: 6101
+        protocol: https
+        name: https
 
-        #- name: myservice
+
+
+
+
+      #- name: myservice
       # project: app.csproj # msbuild project path (relative to this file)
       # executable: app.exe # path to an executable (relative to this file)
       # args: --arg1=3 # arguments to pass to the process

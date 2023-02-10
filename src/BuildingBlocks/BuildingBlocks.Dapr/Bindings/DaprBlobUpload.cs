@@ -39,11 +39,15 @@ public class DaprBlobUpload : IBlobUpload, IFileUploadBinding
 
         Guard.Against.InvalidFile(fileArrayContent, file.FileName);
 
+        // TODO: This is a temporary fix for the issue with spaces in the file name.
+        // Update with JCR policy naming convention.
+        var fileName = file.FileName.Replace(" ", "_", StringComparison.OrdinalIgnoreCase);
+
         await _daprClient.InvokeBindingAsync(
             "observation-extraction-output-binding",
             "create",
             Convert.ToBase64String(fileArrayContent),
-            new Dictionary<string, string> { { "blobName", $"{file.FileName}" } },
+            new Dictionary<string, string> { { "blobName", $"{fileName}" } },
             cancellationToken);
 
         return file.FileName;

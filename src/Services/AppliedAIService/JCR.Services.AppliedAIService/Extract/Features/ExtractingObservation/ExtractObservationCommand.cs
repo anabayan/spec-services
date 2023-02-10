@@ -14,7 +14,7 @@ public record ExtractObservationCommand(
     int TracerId
 ) : ICommand<ExtractObservationResponse>
 {
-    public long Id { get; init; } = SnowFlakIdGenerator.NewId();
+    public long Id { get; init; } = SnowFlakeIdGenerator.NewId();
 }
 
 public class ExtractObservationValidator : AbstractValidator<ExtractObservationCommand>
@@ -53,7 +53,7 @@ public class ExtractObservationHandler : ICommandHandler<ExtractObservationComma
             "jcr-services-bus",
             "ObservationFormUploaded",
             new ObservationFormUploadedEvent(
-                request.File.FileName,
+                request.File.FileName.Replace(" ", "_", StringComparison.OrdinalIgnoreCase),
                 request.SiteId,
                 request.ProgramId,
                 request.TracerId),

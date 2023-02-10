@@ -1,5 +1,6 @@
 using Ardalis.GuardClauses;
 using BuildingBlocks.Abstractions.CQRS.Commands;
+using BuildingBlocks.Abstractions.Serialization;
 using BuildingBlocks.Core.IdsGenerator;
 using FluentValidation;
 
@@ -8,7 +9,7 @@ namespace JCR.Services.AppliedAIService.Extract.Features.ProcessingObservationFo
 public record ProcessObservationFormCommand
     (string FileName, int SiteId, int ProgramId, int TracerId) : ICommand<ProcessObservationFormResponse>
 {
-    public long Id { get; init; } = SnowFlakIdGenerator.NewId();
+    public long Id { get; init; } = SnowFlakeIdGenerator.NewId();
 }
 
 public class ExtractObservationValidator : AbstractValidator<ProcessObservationFormCommand>
@@ -26,13 +27,16 @@ public class
     ProcessObservationCommandHandler : ICommandHandler<ProcessObservationFormCommand, ProcessObservationFormResponse>
 {
     private readonly ILogger<ProcessObservationCommandHandler> _logger;
+    private readonly ISerializer _serializer;
 
-    public ProcessObservationCommandHandler(ILogger<ProcessObservationCommandHandler> logger)
+    public ProcessObservationCommandHandler(ILogger<ProcessObservationCommandHandler> logger, ISerializer serializer)
     {
+        _serializer = serializer;
         _logger = Guard.Against.Null(logger, nameof(logger));
     }
 
-    public Task<ProcessObservationFormResponse> Handle(ProcessObservationFormCommand request,
+    public async Task<ProcessObservationFormResponse> Handle(
+        ProcessObservationFormCommand request,
         CancellationToken cancellationToken)
     {
         _logger.LogInformation(
@@ -42,6 +46,15 @@ public class
             request.ProgramId,
             request.TracerId);
 
-        return Task.FromResult(new ProcessObservationFormResponse(true));
+        var processedDocument = await FormRecognizer.Recognize(request.FileName);
+
+        _logger.LogInformation(
+            @"Processed observation form {ObservationModel} for site {SiteId}, program {ProgramId}, and tracer {TracerId}",
+            _serializer.Serialize(processedDocument),
+            request.SiteId,
+            request.ProgramId,
+            request.TracerId);
+
+        return new ProcessObservationFormResponse(true);
     }
 }

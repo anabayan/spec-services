@@ -47,7 +47,9 @@
 
 using AutoMapper;
 using BuildingBlocks.Abstractions.CQRS.Commands;
-using JCR.Services.AppliedAIService.Extract.Features;
+using Serilog.Context;
+
+namespace JCR.Services.AppliedAIService.Extract.Features.ProcessingObservationForm;
 
 /// <summary>
 ///     There is an open issue with the Dapr .NET SDK that prevents the use of versioning and topic subscriptions
@@ -67,12 +69,17 @@ public static class ProcessObservationFormEndpoint
             .ExcludeFromDescription();
     }
 
-    private static Task<IResult> HandleAsync(
-        ObservationFormUploadedEvent observationFormUploadedEvent,
+    private static async Task<IResult> HandleAsync(
+        ObservationFormUploadedEvent @event,
         ICommandProcessor commandProcessor,
         IMapper mapper,
         CancellationToken cancellationToken)
     {
-        return Task.FromResult(Results.Created("Just nothing", "observation"));
+        using (LogContext.PushProperty("Endpoint", nameof(ProcessObservationFormEndpoint)))
+        {
+            var command = mapper.Map<ProcessObservationFormCommand>(@event);
+            var response = await commandProcessor.SendAsync(command, cancellationToken);
+            return Results.Created("Observation Created", response);
+        }
     }
 }

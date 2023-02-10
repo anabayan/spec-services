@@ -20,7 +20,7 @@ public static partial class WebApplicationBuilderExtensions
 {
     public static WebApplicationBuilder AddInfrastructure(this WebApplicationBuilder builder)
     {
-        SnowFlakIdGenerator.Configure(1);
+        SnowFlakeIdGenerator.Configure(1);
 
         builder.Services.AddCore(builder.Configuration);
 
