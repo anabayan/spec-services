@@ -27,12 +27,16 @@
 
 	"features": {
 		"ghcr.io/devcontainers/features/dotnet:1": {
+			"installUsingApt": true,
 			"version": "6"
-			
+		},
+		"ghcr.io/devcontainers/features/azure-cli:1": {
+			"installBicep": true,
+			"version": "latest"
 		},
 		"ghcr.io/devcontainers/features/sshd:1": {
-        	"version": "latest"
-		}	
+			"version": "latest"
+		}
 	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
