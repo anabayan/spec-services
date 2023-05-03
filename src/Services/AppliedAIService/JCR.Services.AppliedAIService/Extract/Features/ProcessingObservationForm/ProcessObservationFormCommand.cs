@@ -3,6 +3,7 @@ using BuildingBlocks.Abstractions.CQRS.Commands;
 using BuildingBlocks.Abstractions.Serialization;
 using BuildingBlocks.Core.IdsGenerator;
 using FluentValidation;
+using JCR.Services.AppliedAIService.Extract.Services;
 
 namespace JCR.Services.AppliedAIService.Extract.Features.ProcessingObservationForm;
 
@@ -23,15 +24,20 @@ public class ExtractObservationValidator : AbstractValidator<ProcessObservationF
     }
 }
 
-public class
-    ProcessObservationCommandHandler : ICommandHandler<ProcessObservationFormCommand, ProcessObservationFormResponse>
+public class ProcessObservationCommandHandler
+    : ICommandHandler<ProcessObservationFormCommand, ProcessObservationFormResponse>
 {
+    private readonly FormRecognizerService _formRecognizerService;
     private readonly ILogger<ProcessObservationCommandHandler> _logger;
     private readonly ISerializer _serializer;
 
-    public ProcessObservationCommandHandler(ILogger<ProcessObservationCommandHandler> logger, ISerializer serializer)
+    public ProcessObservationCommandHandler(
+        ILogger<ProcessObservationCommandHandler> logger,
+        ISerializer serializer,
+        FormRecognizerService formRecognizerService)
     {
         _serializer = serializer;
+        _formRecognizerService = formRecognizerService;
         _logger = Guard.Against.Null(logger, nameof(logger));
     }
 
@@ -46,7 +52,7 @@ public class
             request.ProgramId,
             request.TracerId);
 
-        var processedDocument = await FormRecognizer.Recognize(request.FileName);
+        var processedDocument = await _formRecognizerService.ExtractObservationInfo(request.FileName);
 
         _logger.LogInformation(
             @"Processed observation form {ObservationModel} for site {SiteId}, program {ProgramId}, and tracer {TracerId}",

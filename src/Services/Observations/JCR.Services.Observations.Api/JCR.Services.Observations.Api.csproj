@@ -10,12 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.Web\BuildingBlocks.Web.csproj"/>
-    <ProjectReference Include="..\JCR.Services.AppliedAIService\JCR.Services.Observations.csproj"/>
+    <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.Web\BuildingBlocks.Web.csproj" />
+    <ProjectReference Include="..\JCR.Services.Observations\JCR.Services.Observations.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Build.Containers"/>
+    <PackageReference Include="Microsoft.NET.Build.Containers" />
   </ItemGroup>
 </Project>
 

@@ -1,21 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <ContainerImageName>imageprocessor-services</ContainerImageName>
-    <ContainerImageTag>1.1.0</ContainerImageTag>
-    <ContainerBaseImage>mcr.microsoft.com/dotnet/runtime-deps:7.0</ContainerBaseImage>
-    <PublishTrimmed>true</PublishTrimmed>
-    <InvariantGlobalization>true</InvariantGlobalization>
-    <RootNamespace>JCR.Services.ImageProcessor.Api</RootNamespace>
+    <ContainerImageTag>1.0.0</ContainerImageTag>
+    <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:7.0</ContainerBaseImage>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.Web\BuildingBlocks.Web.csproj" />
-    <ProjectReference Include="..\JCR.Services.AppliedAIService\JCR.Services.AppliedAIService.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.Web\BuildingBlocks.Web.csproj"/>
+    <ProjectReference Include="..\JCR.Services.AppliedAIService\JCR.Services.AppliedAIService.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Build.Containers" />
+    <PackageReference Include="Microsoft.NET.Build.Containers"/>
   </ItemGroup>
+
 </Project>
 

@@ -1,4 +1,5 @@
 using BuildingBlocks.Abstractions.Dapr;
+using BuildingBlocks.Abstractions.Messaging;
 using BuildingBlocks.Caching;
 using BuildingBlocks.Caching.Behaviours;
 using BuildingBlocks.Core.Extensions;
@@ -12,9 +13,9 @@ using BuildingBlocks.Swagger;
 using BuildingBlocks.Validation;
 using BuildingBlocks.Web.Extensions;
 using DotNetEnv;
-using JCR.Services.AppliedAIService.Extract;
+using JCR.Services.Observations.Create;
 
-namespace JCR.Services.AppliedAIService.Shared.Extensions.WebApplicationBuilderExtensions;
+namespace JCR.Services.Observations.Shared.Extensions.WebApplicationBuilderExtensions;
 
 public static partial class WebApplicationBuilderExtensions
 {
@@ -25,6 +26,7 @@ public static partial class WebApplicationBuilderExtensions
         builder.Services.AddCore(builder.Configuration);
 
         // TODO: Authentication, Authorization
+        // builder.Services.AddCustomAuthentication(builder.Configuration);
 
         // TODO: Email
 
@@ -38,13 +40,15 @@ public static partial class WebApplicationBuilderExtensions
         // https://github.com/tonerdo/dotnet-env
         Env.TraversePath().Load();
 
-        builder.Configuration.AddEnvironmentVariables("jcr_AppliedAIService_env_");
+        builder.Configuration.AddEnvironmentVariables("jcr_ObservationsService_env_");
 
         builder.AddCustomVersioning();
 
-        builder.AddCustomSwagger(typeof(AppliedAIServiceRoot).Assembly);
+        builder.AddCustomSwagger(typeof(ObservationsRoot).Assembly);
 
         builder.Services.AddHttpContextAccessor();
+
+        //TODO: Add from Dapr Here (Messagebus, bindings, stores etc);
 
         builder.AddCompression();
         builder.AddCustomProblemDetails();
@@ -54,11 +58,11 @@ public static partial class WebApplicationBuilderExtensions
         //TODO: Add OpenTelemetry Here custom or Dapr
         builder.AddCustomOpenTelemetry();
 
-        // Add required services for the current service/API in an array
+        // Add required services for the current service in an array
         builder.Services.AddDaprServices(
             builder.Configuration,
             serviceLifetime: ServiceLifetime.Transient,
-            daprServices: new[] { typeof(IBlobUpload) });
+            daprServices: new[] { typeof(IBlobUpload), typeof(IBus) });
 
         // https://blog.maartenballiauw.be/post/2022/09/26/aspnet-core-rate-limiting-middleware.html
         builder.AddCustomRateLimit();
@@ -71,10 +75,9 @@ public static partial class WebApplicationBuilderExtensions
 
         builder.Services.AddCustomValidators(Assembly.GetExecutingAssembly());
 
-        // Add Mappers Here
         builder.Services.AddAutoMapper(x =>
         {
-            x.AddProfile<ExtractMappers>();
+            x.AddProfile<CreateMappers>();
         });
 
         builder.AddCustomCaching();

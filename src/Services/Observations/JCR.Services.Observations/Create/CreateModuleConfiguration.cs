@@ -1,22 +1,17 @@
 using Asp.Versioning.Builder;
 using BuildingBlocks.Abstractions.Web.Module;
-using JCR.Services.AppliedAIService.Extract.Features.ProcessingObservationForm;
-using JCR.Services.AppliedAIService.Extract.Services;
-using JCR.Services.AppliedAIService.Shared;
+using JCR.Services.Observations.Shared;
 
-namespace JCR.Services.AppliedAIService.Extract;
+namespace JCR.Services.Observations.Create;
 
-internal class ExtractModuleConfiguration : IModuleConfiguration
+internal class CreateModuleConfiguration : IModuleConfiguration
 {
-    public const string Tag = "extract";
+    public const string Tag = "create";
     public const string Prefix = $"{SharedModulesConfiguration.Prefix}/{Tag}";
     public static ApiVersionSet VersionSet { get; } = default!;
 
     public WebApplicationBuilder AddModuleServices(WebApplicationBuilder builder)
     {
-        // Inject service into the container without interface
-        builder.Services.AddSingleton<FormRecognizerService>();
-
         return builder;
     }
 
@@ -37,7 +32,7 @@ internal class ExtractModuleConfiguration : IModuleConfiguration
             .MapGroup(Prefix)
             .HasApiVersion(1.0);
 
-        endpointGroup.MapProcessObservationFormEndpoint();
+        // endpointGroup.MapProcessObservationFormEndpoint();
 
         endpoints.MapSubscribeHandler();
 

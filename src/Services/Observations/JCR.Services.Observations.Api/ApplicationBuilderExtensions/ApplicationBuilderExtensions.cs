@@ -1,4 +1,4 @@
-namespace JCR.Services.AppliedAIService.Api.ApplicationBuilderExtensions;
+namespace JCR.Services.Observations.Api.ApplicationBuilderExtensions;
 
 public static class ApplicationBuilderExtensions
 {

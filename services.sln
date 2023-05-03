@@ -29,13 +29,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.HealthCheck"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "services", "services", "{E94AD010-1690-4872-88BA-373BBEE33D68}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tasks", "Tasks", "{C163042D-CE3A-42DC-9BA2-635B0D2040DC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCR.Services.Tasks", "src\Services\Tasks\JCR.Services.Tasks\JCR.Services.Tasks.csproj", "{7FB5A813-0EB8-4B57-979D-120FA1459955}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCR.Services.Tasks.Api", "src\Services\Tasks\JCR.Services.Tasks.Api\JCR.Services.Tasks.Api.csproj", "{DF8B8F7D-63B6-46F6-8D79-DA67E3D25F48}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AppliedAIService", "AppliedAIService", "{92ECDF00-79E0-4D5D-87F0-DFCE99ADB40D}"
+	ProjectSection(SolutionItems) = preProject
+		src\Services\AppliedAIService\Dockerfile = src\Services\AppliedAIService\Dockerfile
+		src\Services\AppliedAIService\.dockerignore = src\Services\AppliedAIService\.dockerignore
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Dapr", "src\BuildingBlocks\BuildingBlocks.Dapr\BuildingBlocks.Dapr.csproj", "{3402AE56-AB45-40A9-B33A-C1DD8E0A86E3}"
 EndProject
@@ -60,6 +58,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", 
 		deployments\dapr\components\jcr-services-secret-store.yaml = deployments\dapr\components\jcr-services-secret-store.yaml
 		deployments\dapr\components\secrets.dev.json = deployments\dapr\components\secrets.dev.json
 		deployments\dapr\components\jcr-services-pub-sub.yaml = deployments\dapr\components\jcr-services-pub-sub.yaml
+		deployments\dapr\components\observations-state-store.yaml = deployments\dapr\components\observations-state-store.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "release", "release", "{2B35AF30-6049-483E-B2BA-DF531F53D2C8}"
@@ -75,6 +74,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCR.Services.Observations", "src\Services\Observations\JCR.Services.Observations\JCR.Services.Observations.csproj", "{97C96B40-D5DE-4633-8988-A31C16036BE7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCR.Services.Observations.Api", "src\Services\Observations\JCR.Services.Observations.Api\JCR.Services.Observations.Api.csproj", "{450330F8-36EC-4DB2-A791-ED45F290645F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{C7C199E3-6D53-478A-B9D8-E397D4BA7B0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JCR.Services.Shared", "src\Services\Shared\JCR.Services.Shared\JCR.Services.Shared.csproj", "{3BC17A4B-577B-4601-8FB1-70758018CD33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,9 +100,6 @@ Global
 		{C19420D2-1324-4D73-8F3E-66B82B76573C} = {9C6B4C04-216A-4CF6-B8E4-B59D3BAC1DCC}
 		{8AEE9DD9-E2D1-47DC-AB15-BE494C1653EA} = {9C6B4C04-216A-4CF6-B8E4-B59D3BAC1DCC}
 		{E94AD010-1690-4872-88BA-373BBEE33D68} = {80D1494D-AA4E-4DF5-B9B6-0BA9E368E572}
-		{C163042D-CE3A-42DC-9BA2-635B0D2040DC} = {E94AD010-1690-4872-88BA-373BBEE33D68}
-		{7FB5A813-0EB8-4B57-979D-120FA1459955} = {C163042D-CE3A-42DC-9BA2-635B0D2040DC}
-		{DF8B8F7D-63B6-46F6-8D79-DA67E3D25F48} = {C163042D-CE3A-42DC-9BA2-635B0D2040DC}
 		{92ECDF00-79E0-4D5D-87F0-DFCE99ADB40D} = {E94AD010-1690-4872-88BA-373BBEE33D68}
 		{3402AE56-AB45-40A9-B33A-C1DD8E0A86E3} = {9C6B4C04-216A-4CF6-B8E4-B59D3BAC1DCC}
 		{8EEF3D4B-DA12-4586-9481-2C038720D6DD} = {DE3C62B1-3A85-4C76-9286-FFC2D60F80DC}
@@ -114,6 +114,8 @@ Global
 		{48652307-3E08-49E7-8512-C184BDB0A085} = {E94AD010-1690-4872-88BA-373BBEE33D68}
 		{97C96B40-D5DE-4633-8988-A31C16036BE7} = {48652307-3E08-49E7-8512-C184BDB0A085}
 		{450330F8-36EC-4DB2-A791-ED45F290645F} = {48652307-3E08-49E7-8512-C184BDB0A085}
+		{C7C199E3-6D53-478A-B9D8-E397D4BA7B0E} = {E94AD010-1690-4872-88BA-373BBEE33D68}
+		{3BC17A4B-577B-4601-8FB1-70758018CD33} = {C7C199E3-6D53-478A-B9D8-E397D4BA7B0E}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D7B9F39E-0A9F-406B-BF62-A1699A6220BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -156,14 +158,6 @@ Global
 		{8AEE9DD9-E2D1-47DC-AB15-BE494C1653EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AEE9DD9-E2D1-47DC-AB15-BE494C1653EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AEE9DD9-E2D1-47DC-AB15-BE494C1653EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7FB5A813-0EB8-4B57-979D-120FA1459955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7FB5A813-0EB8-4B57-979D-120FA1459955}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7FB5A813-0EB8-4B57-979D-120FA1459955}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7FB5A813-0EB8-4B57-979D-120FA1459955}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF8B8F7D-63B6-46F6-8D79-DA67E3D25F48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF8B8F7D-63B6-46F6-8D79-DA67E3D25F48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF8B8F7D-63B6-46F6-8D79-DA67E3D25F48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF8B8F7D-63B6-46F6-8D79-DA67E3D25F48}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3402AE56-AB45-40A9-B33A-C1DD8E0A86E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3402AE56-AB45-40A9-B33A-C1DD8E0A86E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3402AE56-AB45-40A9-B33A-C1DD8E0A86E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -184,5 +178,9 @@ Global
 		{450330F8-36EC-4DB2-A791-ED45F290645F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{450330F8-36EC-4DB2-A791-ED45F290645F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{450330F8-36EC-4DB2-A791-ED45F290645F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BC17A4B-577B-4601-8FB1-70758018CD33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BC17A4B-577B-4601-8FB1-70758018CD33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BC17A4B-577B-4601-8FB1-70758018CD33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BC17A4B-577B-4601-8FB1-70758018CD33}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
