@@ -58,7 +58,7 @@ public static partial class WebApplicationBuilderExtensions
         builder.Services.AddDaprServices(
             builder.Configuration,
             serviceLifetime: ServiceLifetime.Transient,
-            daprServices: new[] { typeof(IBlobUpload) });
+            daprServices: new[] { typeof(IBlobUpload), typeof(IStateStore) });
 
         // https://blog.maartenballiauw.be/post/2022/09/26/aspnet-core-rate-limiting-middleware.html
         builder.AddCustomRateLimit();
