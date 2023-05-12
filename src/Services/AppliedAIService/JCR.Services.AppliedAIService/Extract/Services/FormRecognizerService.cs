@@ -1,20 +1,27 @@
 using Azure;
 using Azure.AI.FormRecognizer.DocumentAnalysis;
 
-namespace JCR.Services.AppliedAIService.Extract.Features.ProcessingObservationForm;
+namespace JCR.Services.AppliedAIService.Extract.Services;
 
-public class FormRecognizer
+public class FormRecognizerService
 {
-    public static async Task<ObservationModel> Recognize(string fileName)
+    private ILogger<FormRecognizerService> _logger;
+
+    public FormRecognizerService(ILogger<FormRecognizerService> logger)
     {
-        var apiKey = "3c8e94f852404bf196bc5a0c0a7cdf08";
+        _logger = logger;
+    }
+
+    public async Task<ObservationModel> ExtractObservationInfo(string fileName)
+    {
+        var credential = new AzureKeyCredential("3c8e94f852404bf196bc5a0c0a7cdf08");
         var endpoint = "https://centralus.api.cognitive.microsoft.com/";
-        var modelId = "TracerObservationForm_v12";
+        var modelId = "FormModel_v35";
 
         var documentUrl = $"https://stobservationforms.blob.core.windows.net/uploads/{fileName}";
 
         var fileUri = new Uri(documentUrl);
-        var client = new DocumentAnalysisClient(new Uri(endpoint), new AzureKeyCredential(apiKey));
+        var client = new DocumentAnalysisClient(new Uri(endpoint), credential);
         var operation = await client.AnalyzeDocumentFromUriAsync(WaitUntil.Completed, modelId, fileUri);
         var result = operation.Value;
 

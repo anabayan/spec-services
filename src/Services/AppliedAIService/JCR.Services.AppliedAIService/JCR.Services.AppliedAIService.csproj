@@ -18,11 +18,11 @@
     <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.Swagger\BuildingBlocks.Swagger.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.Validation\BuildingBlocks.Validation.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks.Web\BuildingBlocks.Web.csproj" />
+    <ProjectReference Include="..\..\Shared\JCR.Services.Shared\JCR.Services.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Extract\Exceptions" />
-    <Folder Include="Extract\Features\ExtractingObservation\v1\Events" />
     <Folder Include="Extract\Models" />
   </ItemGroup>
 

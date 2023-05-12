@@ -1,14 +1,9 @@
 # [Choice] .NET version: 5.0, 3.1, 2.1
-ARG VARIANT=7.0
+ARG VARIANT=6.0
 FROM mcr.microsoft.com/vscode/devcontainers/dotnet:0-${VARIANT}
 
-# [Option] Install Node.js
-ARG INSTALL_NODE="true"
-ARG NODE_VERSION="16.14.0"
-RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1"; fi
-
 # [Option] Install Azure CLI
-ARG INSTALL_AZURE_CLI="false"
+ARG INSTALL_AZURE_CLI="true"
 COPY library-scripts/azcli-debian.sh /tmp/library-scripts/
 RUN if [ "$INSTALL_AZURE_CLI" = "true" ]; then bash /tmp/library-scripts/azcli-debian.sh; fi \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
@@ -24,13 +19,15 @@ ARG USERNAME=vscode
 # own dependencies. A user of "automatic" attempts to reuse an user ID if one already exists.
 COPY library-scripts/docker-debian.sh /tmp/library-scripts/
     # Add ubuntu repo for mssql-tools install
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \ 
-    && curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | tee /etc/apt/sources.list.d/msprod.list \ 
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list | tee /etc/apt/sources.list.d/msprod.list \
     apt-get update \
     # Use Docker script from script library to set things up
     && /bin/bash /tmp/library-scripts/docker-debian.sh "${ENABLE_NONROOT_DOCKER}" "/var/run/docker-host.sock" "/var/run/docker.sock" "${USERNAME}" \
     # Install Dapr
     && wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash \
+    # Install Tye \
+    && dotnet tool install -g Microsoft.Tye --version "0.11.0-alpha.22111.1" \
     # Install Python 2.7
     && apt-get -y install python2-minimal \
     # Install mssql-tools for sqlcmd usage
@@ -42,7 +39,7 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
 # Add mssql-tools to the path so that sqlcmd is ready to use.
 ENV PATH "$PATH:/home/${USERNAME}/.dapr/bin:/opt/mssql-tools/bin:/home/vscode/.dotnet/tools"
 
-# Setting the ENTRYPOINT to docker-init.sh will configure non-root access 
+# Setting the ENTRYPOINT to docker-init.sh will configure non-root access
 # to the Docker socket. The script will also execute CMD as needed.
 ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
 CMD [ "sleep", "infinity" ]

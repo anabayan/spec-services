@@ -1,25 +1,26 @@
 using Ardalis.GuardClauses;
 using BuildingBlocks.Abstractions.CQRS.Commands;
 using BuildingBlocks.Abstractions.Dapr;
+using BuildingBlocks.Abstractions.Messaging;
 using BuildingBlocks.Core.IdsGenerator;
-using Dapr.Client;
 using FluentValidation;
+using JCR.Services.Shared.Observations.Create.Events.v1;
 
-namespace JCR.Services.AppliedAIService.Extract.Features.ExtractingObservation;
+namespace JCR.Services.Observations.Create.Features.UploadingObservation;
 
-public record ExtractObservationCommand(
+public record UploadObservationCommand(
     IFormFile File,
     int SiteId,
     int ProgramId,
     int TracerId
-) : ICommand<ExtractObservationResponse>
+) : ICommand<UploadObservationResponse>
 {
     public long Id { get; init; } = SnowFlakeIdGenerator.NewId();
 }
 
-public class ExtractObservationValidator : AbstractValidator<ExtractObservationCommand>
+public class UploadObservationValidator : AbstractValidator<UploadObservationCommand>
 {
-    public ExtractObservationValidator()
+    public UploadObservationValidator()
     {
         // TODO: Add validators (Create multiple file validators?) for file -> filename, extension, filename endings, etc.
         // https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-input-validation#controls-users
@@ -30,35 +31,42 @@ public class ExtractObservationValidator : AbstractValidator<ExtractObservationC
     }
 }
 
-public class ExtractObservationHandler : ICommandHandler<ExtractObservationCommand, ExtractObservationResponse>
+public class UploadObservationCommandHandler : ICommandHandler<UploadObservationCommand, UploadObservationResponse>
 {
     private readonly IBlobUpload _blobUpload;
-    private readonly DaprClient _dapr;
+    private readonly ILogger<UploadObservationCommandHandler> _logger;
+    private readonly IBus _messageBus;
 
-    public ExtractObservationHandler(IBlobUpload blobUpload, DaprClient dapr)
+    public UploadObservationCommandHandler(
+        ILogger<UploadObservationCommandHandler> logger,
+        IBlobUpload blobUpload,
+        IBus messageBus)
     {
         _blobUpload = blobUpload;
-        _dapr = dapr;
+        _messageBus = messageBus;
+        _logger = logger;
     }
 
-    public async Task<ExtractObservationResponse> Handle(
-        ExtractObservationCommand request,
+    public async Task<UploadObservationResponse> Handle(
+        UploadObservationCommand request,
         CancellationToken cancellationToken)
     {
         Guard.Against.Null(request, nameof(request));
 
+        _logger.LogInformation("Uploading observation form {Request} to blob storage", request);
+
         await _blobUpload.UploadAsync(request.File, cancellationToken);
 
-        await _dapr.PublishEventAsync(
+        await _messageBus.PublishEventAsync(
             "jcr-services-bus",
-            "ObservationFormUploaded",
-            new ObservationFormUploadedEvent(
+            "EProducts/Services/Observations/ObservationUploaded",
+            new ObservationUploadedV1(
                 request.File.FileName.Replace(" ", "_", StringComparison.OrdinalIgnoreCase),
                 request.SiteId,
                 request.ProgramId,
                 request.TracerId),
             cancellationToken);
 
-        return await Task.FromResult(new ExtractObservationResponse(true));
+        return new UploadObservationResponse(true);
     }
 }

@@ -94,7 +94,6 @@
     <PackageVersion Include="SerilogTimings" Version="3.0.1" />
     <PackageVersion Include="Serilog.OpenTelemetry.ConsoleSink" Version="2.0.0" />
     <PackageVersion Include="Serilog.Sinks.Debug" Version="2.0.0" />
-    <PackageVersion Include="Serilog.Enrichers.Environment" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="OpenTelemetry" Version="$(OpenTelemetry)" />

@@ -47,13 +47,14 @@
 
 using AutoMapper;
 using BuildingBlocks.Abstractions.CQRS.Commands;
+using JCR.Services.Shared.Observations.Create.Events.v1;
 using Serilog.Context;
 
 namespace JCR.Services.AppliedAIService.Extract.Features.ProcessingObservationForm;
 
 /// <summary>
 ///     There is an open issue with the Dapr .NET SDK that prevents the use of versioning and topic subscriptions
-///     So, for now, we are not auto registeting with IMinimalEndpoint interface.
+///     So, for now, we are not auto registering with IMinimalEndpoint interface.
 ///     Instead we are registering by hand at the top level and excluding from the description.
 ///     https://github.com/dapr/dotnet-sdk/issues/791
 ///     https://github.com/dapr/dotnet-sdk/issues/882
@@ -65,12 +66,12 @@ public static class ProcessObservationFormEndpoint
         return endpoints.MapPost("/processform", HandleAsync)
             .WithTopic(
                 "jcr-services-bus",
-                "ObservationFormUploaded")
+                "EProducts/Services/Observations/ObservationUploaded")
             .ExcludeFromDescription();
     }
 
     private static async Task<IResult> HandleAsync(
-        ObservationFormUploadedEvent @event,
+        ObservationUploadedV1 @event,
         ICommandProcessor commandProcessor,
         IMapper mapper,
         CancellationToken cancellationToken)

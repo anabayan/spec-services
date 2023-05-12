@@ -1,0 +1,20 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: observations-store
+spec:
+  type: state.azure.cosmosdb
+  version: v1
+  metadata:
+    - name: url
+      value: "https://cosmos-eproducts-kmboqof4yhjze.documents.azure.com:443/"
+    - name: masterKey
+      secretKeyRef:
+        name: "cosmosdb-account-key"
+        key: "cosmosdb-account-key"
+    - name: database
+      value: "observations"
+    - name: collection
+      value: "uploads"
+auth:
+  secretStore: local-secret-store

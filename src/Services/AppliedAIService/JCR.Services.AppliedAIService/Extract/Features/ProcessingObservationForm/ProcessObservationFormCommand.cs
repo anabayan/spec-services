@@ -1,8 +1,11 @@
 using Ardalis.GuardClauses;
 using BuildingBlocks.Abstractions.CQRS.Commands;
-using BuildingBlocks.Abstractions.Serialization;
+using BuildingBlocks.Abstractions.Dapr;
+using BuildingBlocks.Abstractions.Messaging;
 using BuildingBlocks.Core.IdsGenerator;
 using FluentValidation;
+using JCR.Services.AppliedAIService.Extract.Services;
+using JCR.Services.Shared.Observations.Create.Events.v1;
 
 namespace JCR.Services.AppliedAIService.Extract.Features.ProcessingObservationForm;
 
@@ -23,15 +26,22 @@ public class ExtractObservationValidator : AbstractValidator<ProcessObservationF
     }
 }
 
-public class
-    ProcessObservationCommandHandler : ICommandHandler<ProcessObservationFormCommand, ProcessObservationFormResponse>
+public class ProcessObservationCommandHandler
+    : ICommandHandler<ProcessObservationFormCommand, ProcessObservationFormResponse>
 {
+    private readonly FormRecognizerService _formRecognizerService;
     private readonly ILogger<ProcessObservationCommandHandler> _logger;
-    private readonly ISerializer _serializer;
+    private readonly IBus _messageBus;
+    private readonly IStateStore _stateStore;
 
-    public ProcessObservationCommandHandler(ILogger<ProcessObservationCommandHandler> logger, ISerializer serializer)
+    public ProcessObservationCommandHandler(
+        ILogger<ProcessObservationCommandHandler> logger,
+        FormRecognizerService formRecognizerService,
+        IStateStore stateStore, IBus messageBus)
     {
-        _serializer = serializer;
+        _formRecognizerService = formRecognizerService;
+        _stateStore = stateStore;
+        _messageBus = messageBus;
         _logger = Guard.Against.Null(logger, nameof(logger));
     }
 
@@ -46,14 +56,28 @@ public class
             request.ProgramId,
             request.TracerId);
 
-        var processedDocument = await FormRecognizer.Recognize(request.FileName);
+        var processedDocument = await _formRecognizerService.ExtractObservationInfo(request.FileName);
 
         _logger.LogInformation(
-            @"Processed observation form {ObservationModel} for site {SiteId}, program {ProgramId}, and tracer {TracerId}",
-            _serializer.Serialize(processedDocument),
+            "Processed observation form {ObservationModel} for site {SiteId}, program {ProgramId}, and tracer {TracerId}",
+            processedDocument,
             request.SiteId,
             request.ProgramId,
             request.TracerId);
+
+        var referenceKey = SnowFlakeIdGenerator.NewId().ToString();
+
+        await _stateStore.SaveStateAsync(
+            "observations-store",
+            referenceKey,
+            processedDocument,
+            cancellationToken: cancellationToken);
+
+        await _messageBus.PublishEventAsync(
+            "jcr-services-bus",
+            "EProducts/Services/Observations/ObservationExtracted",
+            new ObservationExtractedV1(referenceKey),
+            cancellationToken);
 
         return new ProcessObservationFormResponse(true);
     }

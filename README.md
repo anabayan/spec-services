@@ -29,3 +29,9 @@ seq user is admin
 
 
 Issue with routing with versions dpar subscription(https://github.com/dapr/dotnet-sdk/issues/791)
+
+
+Building docker images
+
+
+```dotnet publish --os linux --arch x64 -p:PublishProfile=DefaultContainer -p:ContainerImageName=appliedai-services```

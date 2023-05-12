@@ -46,8 +46,6 @@ public static partial class WebApplicationBuilderExtensions
 
         builder.Services.AddHttpContextAccessor();
 
-        //TODO: Add from Dapr Here (Messagebus, bindings, stores etc);
-
         builder.AddCompression();
         builder.AddCustomProblemDetails();
 
@@ -56,8 +54,11 @@ public static partial class WebApplicationBuilderExtensions
         //TODO: Add OpenTelemetry Here custom or Dapr
         builder.AddCustomOpenTelemetry();
 
-        // Add required services for the current service in an array
-        builder.Services.AddDapr(typeof(IBlobUpload));
+        // Add required services for the current service/API in an array
+        builder.Services.AddDaprServices(
+            builder.Configuration,
+            serviceLifetime: ServiceLifetime.Transient,
+            daprServices: new[] { typeof(IBlobUpload), typeof(IStateStore) });
 
         // https://blog.maartenballiauw.be/post/2022/09/26/aspnet-core-rate-limiting-middleware.html
         builder.AddCustomRateLimit();
@@ -70,7 +71,7 @@ public static partial class WebApplicationBuilderExtensions
 
         builder.Services.AddCustomValidators(Assembly.GetExecutingAssembly());
 
-        //Add Mappers Here
+        // Add Mappers Here
         builder.Services.AddAutoMapper(x =>
         {
             x.AddProfile<ExtractMappers>();

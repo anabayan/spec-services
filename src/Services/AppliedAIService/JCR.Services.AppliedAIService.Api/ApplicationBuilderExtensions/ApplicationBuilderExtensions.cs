@@ -1,4 +1,4 @@
-namespace JCR.Services.ImageProcessor.Api.Extensions.ApplicationBuilderExtensions;
+namespace JCR.Services.AppliedAIService.Api.ApplicationBuilderExtensions;
 
 public static class ApplicationBuilderExtensions
 {

@@ -1,9 +1,10 @@
 ﻿using BuildingBlocks.Core.Extensions.ServiceCollection;
 using BuildingBlocks.Core.Web;
+using BuildingBlocks.Dapr;
 using BuildingBlocks.Swagger;
 using BuildingBlocks.Web;
 using BuildingBlocks.Web.Extensions;
-using JCR.Services.ImageProcessor.Api.Extensions.ApplicationBuilderExtensions;
+using JCR.Services.AppliedAIService.Api.ApplicationBuilderExtensions;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Newtonsoft.Json;
 using Spectre.Console;
@@ -40,7 +41,7 @@ builder.AddMinimalEndpoints();
 builder.AddModulesServices();
 
 var app = builder.Build();
-app.UseCloudEvents(); // Dapr cloud events middleware
+// app.UseCloudEvents(); // Dapr cloud events middleware
 /*----------------- Module Middleware Setup ------------------*/
 await app.ConfigureModules();
 
@@ -59,8 +60,7 @@ app.MapControllers();
 if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("docker"))
     app.UseCustomSwagger(); // swagger middleware should register last to discover all endpoints and its versions correctly
 
-// app.MapSubscribeHandler();
-// app.UseDapr();
+app.UseDapr();
 
 await app.RunAsync();
 
