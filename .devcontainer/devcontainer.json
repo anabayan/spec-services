@@ -1,28 +1,51 @@
 {
   "name": "JCR Services",
+  "build": { "dockerfile": "../.devcontainer/Dockerfile"},   
+
   "features": {
-    "sshd": "latest"
+    "dotnet": "7.0",
+    "docker-from-docker": {
+        "version": "latest",
+        "moby": true,
+        "dockerDashComposeVersion": "v1"
+    },
+    "azure-cli": "latest",
+    "common": {
+      "username": "automatic",
+      "uid": "automatic",
+      "gid": "automatic",
+      "installZsh": true,
+      "installOhMyZsh": true,
+      "upgradePackages": true,
+      "nonFreePackages": false
+    }
   },
-  "workspaceFolder": "/workspace",
-
-  "remoteEnv": {
-    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-dapr",
+        "ms-azuretools.vscode-docker",
+        "ms-dotnettools.csharp",
+        "humao.rest-client"
+      ],
+      "settings": {
+        // "terminal.integrated.shell.linux": "/bin/bash"
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "bin/bash",
+            "icon": "terminal-bash"
+          }
+        }
+      }
+    }
   },
 
-  "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash"
-  },
+  
+  "runArgs": ["--volume=/var/lib/docker", "--privileged"],
 
-  "extensions": [
-    "ms-azuretools.vscode-dapr",
-    "ms-azuretools.vscode-docker",
-    "ms-dotnettools.csharp",
-    "humao.rest-client"
-  ],
+  //  "forwardPorts": [],
 
-   "forwardPorts": [],
-
-  "postCreateCommand": "dapr uninstall --all && dapr init && dotnet tool install --global dotnet-ef && dotnet dev-certs https",
+  "postCreateCommand": "ls && . scripts/on-create.sh",
 
   "remoteUser": "vscode"
 }
